@@ -1,1 +1,65 @@
-<p>register works!</p>
+<div class="d-flex justify-content-center" style="margin-top: 75px;">
+  <div class="col-md-3">
+    <div class="card">
+        <div class="card-header">
+            <h1>Kayıt Ol</h1>
+
+        </div>
+        
+        <div class="card-body">
+            <form
+      autocomplete="off"
+      #registerForm="ngForm"
+      (ngSubmit)="register(registerForm)"
+    >
+      <div class="form-group">
+        <label for="name">Ad Soyad</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          #name
+          [appValid]="name.validity.valid"
+          required
+          minimumLength="3"
+        />
+        <div class="invalid-feedback">Ad Soyad en az 3 karakter olmalıdır.</div>
+      </div>
+
+      <div class="form-group mt-2">
+        <label for="email">E- Mail</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+          #email
+          [appValid]="email.validity.valid"
+          required
+          email
+        />
+        <div class="invalid-feedback">Geçerli bir e-posta adresi giriniz.</div>
+      </div>
+      <div class="form-group mt-2">
+        <label for="password">Şifre</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          name="password"
+          #password
+          required
+          [appValid]="password.validity.valid"
+        />
+        <div class="invalid-feedback">Şifre alanı boş olamaz</div>
+      </div>
+      <div class="form-group mt-2">
+        <button [disabled]="!registerForm.valid" class="btn btn-outline-success w-100">Kayıt ol</button>
+        <a routerLink="/login" style="float: right;">Giriş yap</a>
+      </div>
+    </form>
+        </div>
+    </div>
+  </div>
+</div>
