@@ -24,7 +24,7 @@ export class GenericHttpService {
       },
       error: (err: HttpErrorResponse) => {
         this._spinner.hide();
-        this._toastr.error(err.message);
+        this._toastr.error(err.error.message);
       },
     });
   }
@@ -37,7 +37,7 @@ export class GenericHttpService {
       },
       error: (err: HttpErrorResponse) => {
         this._spinner.hide();
-        this._toastr.error(err.message);
+        this._toastr.error(err.error.message);
       },
     });
   }

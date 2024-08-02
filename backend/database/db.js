@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 uri = "mongodb+srv://tKaya9101:iEHqQsyxuRunyeSt@eticaretdb.wciapxe.mongodb.net/?retryWrites=true&w=majority&appName=ETicaretDb"
 
+
+
 const connection = () => {
     mongoose.connect(uri, {
         useNewUrlParser: true,     // DeprecationWarning: current URL string parser is deprecated

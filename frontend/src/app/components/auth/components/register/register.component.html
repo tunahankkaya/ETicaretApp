@@ -17,6 +17,7 @@
         <input
           type="text"
           class="form-control"
+          [(ngModel)]="model.name"
           id="name"
           name="name"
           #name
@@ -31,6 +32,7 @@
         <label for="email">E- Mail</label>
         <input
           type="email"
+          [(ngModel)]="model.email"
           class="form-control"
           id="email"
           name="email"
@@ -45,6 +47,7 @@
         <label for="password">Şifre</label>
         <input
           type="password"
+          [(ngModel)]="model.password"
           class="form-control"
           id="password"
           name="password"
