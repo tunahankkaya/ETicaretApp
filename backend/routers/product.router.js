@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const product = require("../models/product");
+const Product = require("../models/product");
 const { v4: uuidv4 } = require("uuid");
 const upload = require("./services/file.service");
 const response = require("./services/upload.service");
-const { findById, findByIdAndDelete } = require("../models/user");
+const fs = require('fs');
 
 //Ürün Ekleme
 router.post("/add",upload.array("images"),async(req, res)=>{
@@ -38,50 +38,49 @@ router.post("/removeById", async (req, res)=> {
           fs.unlink(image.path, ()=> {});
       }
 
-      await Product.findByIdAndRemove(_id);
+      await Product.findByIdAndDelete(_id);
       res.json({message: "Ürün kaydı başarıyla silindi!"});
   });
 });
 
 //Ürün Listesi Getir
 router.post("/", async(req, res)=> {
-  response(res, async()=> {
-      const {pageNumber, pageSize, search} = req.body;
+    try {
+        const { pageNumber = 1, pageSize = 10, search = "" } = req.body;
 
-      let productCount = await Product.find({
-          $or: [
-              {
-                  name: { $regex: search, $options: 'i'}
-              }
-          ]
-      }).count();
+        // Parametre doğrulama
+        if (isNaN(pageNumber) || isNaN(pageSize)) {
+            return res.status(400).json({ message: "Geçersiz sayfa numarası veya sayfa boyutu." });
+        }
 
-      let products = await Product
-      .find({
-          $or: [
-              {
-                  name: { $regex: search, $options: 'i'}
-              }
-          ]
-      })
-      .sort({name: 1})
-      .populate("categories")
-      .skip((pageNumber - 1) * pageSize)
-      .limit(pageSize);
+        const productCount = await Product.find({
+            name: { $regex: search, $options: 'i' }
+        }).countDocuments();
 
-      let totalPageCount = Math.ceil(productCount / pageSize);
-      let model = {
-          datas: products,
-          pageNumber: pageNumber,
-          pageSize: pageSize,
-          totalPageCount: totalPageCount,
-          isFirstPage: pageNumber == 1 ? true : false,
-          isLastPage: totalPageCount == pageNumber ? true : false
-      };
+        const products = await Product.find({
+            name: { $regex: search, $options: 'i' }
+        })
+        .sort({ name: 1 })
+        .populate("categories")
+        .skip((pageNumber - 1) * pageSize)
+        .limit(pageSize);
 
-      res.json(model);
-  });
+        const totalPageCount = Math.ceil(productCount / pageSize);
+        const model = {
+            datas: products,
+            pageNumber: pageNumber,
+            pageSize: pageSize,
+            totalPageCount: totalPageCount,
+            isFirstPage: pageNumber === 1,
+            isLastPage: totalPageCount === pageNumber
+        };
+
+        res.json(model);
+    } catch (error) {
+        res.status(500).json({ message: "Bir hata oluştu.", error: error.message });
+    }
 });
+
 
 //Ürünün Aktif/Pasif Durumunu Değiştir
 router.post("/changeActiveStatus", async(req, res)=> {
@@ -152,7 +151,7 @@ router.post("/getAllForHomePage", async(req, res)=> {
   response(res, async()=>{
       const {pageNumber, pageSize, search, categoryId, priceFilter} = req.body;
       let products;
-      if(priceFilter == "0"){
+      if(priceFilter == "1"){
            products = await Product
               .find({
                   isActive: true,

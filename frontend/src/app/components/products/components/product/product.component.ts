@@ -35,19 +35,14 @@ export class ProductComponent implements OnInit {
     this.request.pageNumber = pageNumber;
     this._product.getAll(this.request, (res) => {
       this.result = res;
-
       this.setPageNumbers();
     });
   }
 
   setPageNumbers() {
     const startPage = Math.max(1, this.result.pageNumber - 2);
-    const endPage = Math.min(
-      this.result.totalPageCount,
-      this.result.pageNumber + 2
-    );
+    const endPage = Math.min(this.result.totalPageCount, this.result.pageNumber + 2);
     this.pageNumbers = [];
-
     for (let i = startPage; i <= endPage; i++) {
       this.pageNumbers.push(i);
     }
@@ -60,7 +55,15 @@ export class ProductComponent implements OnInit {
   }
 
   removeById(id: string) {
+    this._swal.callSwal("Ürünü silmek istediğinize emin misiniz?","Ürün silme işlemi geri alınamaz!","Sil",() => {
+    let model = { _id: id };
+    this._product.removeById(model, (res) => {
+      this._toastr.info(res.message);
+      this.getAll(this.request.pageNumber);
+    });
+  });
   }
+
 
   changeProductStatuc(id:string){
     let model = {_id: id};

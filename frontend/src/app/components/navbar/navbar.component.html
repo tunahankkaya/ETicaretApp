@@ -22,10 +22,10 @@
             </ul>
           </li>
         </ul>
-        <button type="button" class="btn btn-outline-success position-relative">
+        <button routerLink="basket" type="button" class="btn btn-outline-success position-relative">
             <i class="fas fa-shopping-cart"></i> 
             <span class="position-absolute top-100 start-0 translate-middle badge rounded-pill bg-danger">
-              0
+              {{basket.count}}
               <span class="visually-hidden"></span>
             </span>
           </button>           

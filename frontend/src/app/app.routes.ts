@@ -51,6 +51,27 @@ export const routes: Routes = [
             (c) => c.ProductAddComponent
           ),
       },
+      {
+        path: 'products/update/:value',
+        loadComponent: () =>
+          import('./components/products/components/product-update/product-update.component').then(
+            (c) => c.ProductUpdateComponent
+          ),
+      },
+      {
+        path: 'basket',
+        loadComponent: () =>
+          import('./components/basket/components/basket/basket.component').then(
+            (c) => c.BasketComponent
+          ),
+      },
+      {
+        path: 'orders',
+        loadComponent: () =>
+          import('./components/orders/component/order/order.component').then(
+            (c) => c.OrderComponent
+          ),
+      },
     ],
   },
 ];

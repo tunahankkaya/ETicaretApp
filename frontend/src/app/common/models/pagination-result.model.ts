@@ -1,5 +1,5 @@
 export class PaginationResultModel<T> {
-  data: T;
+  datas: T;
   pageNumber:number;
   pageSize:number;
   isLastPage:boolean = true;

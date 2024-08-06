@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SharedModule } from '../../common/shared/shared.module';
+import { BasketService } from '../basket/services/basket.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,5 +10,7 @@ import { SharedModule } from '../../common/shared/shared.module';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-
+  constructor(public basket:BasketService) { 
+    this.basket.getCount();
+  }
 }
